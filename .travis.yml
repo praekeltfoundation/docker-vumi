@@ -3,6 +3,7 @@ services:
   - docker
 language: bash
 env:
+  - BASE_OS=alpine VARIETY=
   - BASE_OS=debian VARIETY=
   - BASE_OS=debian VARIETY=pypy
 
