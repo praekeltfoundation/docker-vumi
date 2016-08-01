@@ -17,7 +17,10 @@ fi
 
 SENTRY_OPT="${SENTRY_DSN:+--sentry $SENTRY_DSN}"
 
-SET_OPTS=$(env | grep ^VUMI_OPT_ | sed -e 's/^VUMI_OPT_//' -e 's/=/ /' | awk '{printf("%s=%s:%s ", "--set-option", tolower($1), $2);}')
+SET_OPTS=$(env \
+  | grep ^VUMI_OPT_ \
+  | sed -e 's/^VUMI_OPT_//' -e 's/=/ /' \
+  | awk '{printf("%s=%s:%s ", "--set-option", tolower($1), $2);}')
 
 exec twistd --nodaemon \
   $TWISTD_COMMAND \

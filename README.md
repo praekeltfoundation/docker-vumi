@@ -54,7 +54,8 @@ RUN pip install go-metrics-api
 COPY ./my-config.yaml /app/my-config.yaml
 ENV TWISTD_COMMAND="cyclone"
 EXPOSE 8000
-CMD ["--app", "go_metrics.server.MetricsApi", \
+CMD ["vumi-entrypoint.sh", \
+     "--app", "go_metrics.server.MetricsApi", \
      "--port", "8000", \
      "--app-opts", "my-config.yaml"]
 ```
