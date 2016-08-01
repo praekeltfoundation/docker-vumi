@@ -22,20 +22,20 @@ script:
   - docker build --tag "$IMAGE_TAG" --file "$DOCKERFILE" .
   # For a basic test, do pretty much what's described in the tutorial:
   # http://vumi.readthedocs.io/en/latest/intro/tutorial01.html
-  - >
-      docker run -d --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010
-        -e AMQP_HOST=rabbitmq
-        -e WORKER_CLASS=vumi.transports.telnet.TelnetServerTransport
-        -e VUMI_OPT_TRANSPORT_NAME=telnet -e VUMI_OPT_TELNET_PORT=9010
+  - |
+      docker run -d --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010 \
+        -e AMQP_HOST=rabbitmq \
+        -e WORKER_CLASS=vumi.transports.telnet.TelnetServerTransport \
+        -e VUMI_OPT_TRANSPORT_NAME=telnet -e VUMI_OPT_TELNET_PORT=9010 \
         "$IMAGE_TAG" && sleep 2
-  - >
-      docker logs vumi-telnet
+  - |
+      docker logs vumi-telnet \
         | fgrep "Starting a TelnetServerTransport worker with config: {'telnet_port': '9010', 'transport_name': 'telnet'}"
-  - >
-      docker run -d --name vumi-echo --link vumi-rabbitmq:rabbitmq
-        -e AMQP_HOST=rabbitmq
-        -e WORKER_CLASS=vumi.demos.words.EchoWorker
-        -e VUMI_OPT_TRANSPORT_NAME=telnet
+  - |
+      docker run -d --name vumi-echo --link vumi-rabbitmq:rabbitmq \
+        -e AMQP_HOST=rabbitmq \
+        -e WORKER_CLASS=vumi.demos.words.EchoWorker \
+        -e VUMI_OPT_TRANSPORT_NAME=telnet \
         "$IMAGE_TAG" && sleep 2
   - .travis/telnet-test.sh
   - "docker logs vumi-echo | fgrep 'User message: hallo world'"
