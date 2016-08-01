@@ -18,6 +18,7 @@ before_script:
 
 script:
   - docker build --tag "$IMAGE_TAG" --file "$DOCKERFILE" .
+  - ./test.sh "$IMAGE_TAG"
 
 after_script:
   - docker images
