@@ -1,8 +1,8 @@
 FROM praekeltfoundation/pypy-base:debian
 MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
-ENV VUMI_VERSION "0.6.10"
-RUN pip install vumi==$VUMI_VERSION
+COPY ./requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
 
 WORKDIR /app
 
