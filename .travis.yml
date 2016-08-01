@@ -15,8 +15,6 @@ before_install:
 before_script:
   - IMAGE_TAG="praekeltfoundation/vumi:$BASE_OS${VARIETY:+-$VARIETY}"
   - DOCKERFILE="$BASE_OS/${VARIETY:-Dockerfile}${VARIETY:+.dockerfile}"
-  # Launch rabbitmq container for testing
-  - docker run -d --name vumi-rabbitmq rabbitmq
 
 script:
   - docker build --tag "$IMAGE_TAG" --file "$DOCKERFILE" .
