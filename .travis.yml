@@ -21,5 +21,4 @@ script:
   - ./test.sh "$IMAGE_TAG"
 
 after_script:
-  - docker stop vumi-rabbitmq
   - docker images
