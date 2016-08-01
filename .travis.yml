@@ -22,6 +22,7 @@ script:
   - docker build --tag "$IMAGE_TAG" --file "$DOCKERFILE" .
   # For a basic test, do pretty much what's described in the tutorial:
   # http://vumi.readthedocs.io/en/latest/intro/tutorial01.html
+  # First, run a telnet Vumi transport & check that starts correctly configured
   - |
       docker run -d --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010 \
         -e AMQP_HOST=rabbitmq \
@@ -31,13 +32,16 @@ script:
   - |
       docker logs vumi-telnet \
         | fgrep "Starting a TelnetServerTransport worker with config: {'telnet_port': '9010', 'transport_name': 'telnet'}"
+
+  # Next, run an echo worker & check that it echoes over the telnet interface
   - |
       docker run -d --name vumi-echo --link vumi-rabbitmq:rabbitmq \
         -e AMQP_HOST=rabbitmq \
         -e WORKER_CLASS=vumi.demos.words.EchoWorker \
         -e VUMI_OPT_TRANSPORT_NAME=telnet \
         "$IMAGE_TAG" && sleep 2
-  - .travis/telnet-test.sh
+  # Wait for the session to start, send our message, wait for reply
+  - "{ sleep 1; echo 'hallo world'; sleep 1 } | telnet localhost 9010 | fgrep 'hallo world'"
   - "docker logs vumi-echo | fgrep 'User message: hallo world'"
   - docker stop vumi-telnet vumi-echo
 
