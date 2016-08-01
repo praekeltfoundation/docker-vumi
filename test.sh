@@ -4,10 +4,13 @@ set -e
 # For a basic test, do pretty much what's described in the tutorial:
 # http://vumi.readthedocs.io/en/latest/intro/tutorial01.html
 
-if [ -z "$IMAGE_TAG" ]; then
-  echo "Please set the IMAGE_TAG environment variable to the image tag to test"
+if [[ "$#" != "1" ]]; then
+  echo "Usage: $0 IMAGE_TAG"
+  echo "  IMAGE_TAG is the Docker image tag for the Vumi image to test"
   exit 1
 fi
+
+IMAGE_TAG="$1"; shift
 
 echo "Launching RabbitMQ container..."
 docker run -d --name vumi-rabbitmq rabbitmq
