@@ -2,14 +2,22 @@ sudo: required
 services:
   - docker
 language: bash
+env:
+  - BASE_OS=alpine VARIETY=
+  - BASE_OS=debian VARIETY=
+  - BASE_OS=debian VARIETY=pypy
 
 # Update Docker Engine
 before_install:
   - sudo apt-get update
   - sudo apt-get install -qy -o Dpkg::Options::="--force-confold" docker-engine
 
+before_script:
+  - IMAGE_TAG="praekeltfoundation/vumi:$BASE_OS${VARIETY:+-$VARIETY}"
+  - DOCKERFILE="$BASE_OS/${VARIETY:-Dockerfile}${VARIETY:+.dockerfile}"
+
 script:
-  - docker build --tag praekeltfoundation/vumi .
+  - docker build --tag "$IMAGE_TAG" --file "$DOCKERFILE" .
 
 after_script:
   - docker images
