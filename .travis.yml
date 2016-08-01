@@ -41,7 +41,7 @@ script:
         -e VUMI_OPT_TRANSPORT_NAME=telnet \
         "$IMAGE_TAG" && sleep 2
   # Wait for the session to start, send our message, wait for reply
-  - "{ sleep 1; echo 'hallo world'; sleep 1 } | telnet localhost 9010 | fgrep 'hallo world'"
+  - "{ sleep 1; echo 'hallo world'; sleep 1; } | telnet localhost 9010 | fgrep 'hallo world'"
   - "docker logs vumi-echo | fgrep 'User message: hallo world'"
   - docker stop vumi-telnet vumi-echo
 
