@@ -21,7 +21,7 @@ docker run -d --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010 \
   -e WORKER_CLASS=vumi.transports.telnet.TelnetServerTransport \
   -e VUMI_OPT_TRANSPORT_NAME=telnet -e VUMI_OPT_TELNET_PORT=9010 \
   "$IMAGE_TAG"
-sleep 2
+sleep 5
 
 echo "Checking container logs to see if it started correctly..."
 docker logs vumi-telnet \
@@ -33,7 +33,7 @@ docker run -d --name vumi-echo --link vumi-rabbitmq:rabbitmq \
   -e WORKER_CLASS=vumi.demos.words.EchoWorker \
   -e VUMI_OPT_TRANSPORT_NAME=telnet \
   "$IMAGE_TAG"
-sleep 2
+sleep 5
 
 # Wait for the session to start, send our message, wait for reply
 echo "Checking if the echo server works over the telnet interface..."
