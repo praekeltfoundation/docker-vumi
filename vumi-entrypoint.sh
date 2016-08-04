@@ -22,11 +22,12 @@ SET_OPTS=$(env \
   | sed -e 's/^VUMI_OPT_//' -e 's/=/ /' \
   | awk '{printf("%s=%s:%s ", "--set-option", tolower($1), $2);}')
 
-exec twistd --nodaemon \
-  $TWISTD_COMMAND \
-  $WORKER_CLASS_OPT \
-  $CONFIG_OPT \
-  $AMQP_OPTS \
-  $SENTRY_OPT \
-  $SET_OPTS \
-  "$@"
+exec su-exec vumi \
+  twistd --nodaemon \
+    $TWISTD_COMMAND \
+    $WORKER_CLASS_OPT \
+    $CONFIG_OPT \
+    $AMQP_OPTS \
+    $SENTRY_OPT \
+    $SET_OPTS \
+    "$@"
