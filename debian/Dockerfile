@@ -5,7 +5,7 @@ COPY ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
 RUN addgroup vumi \
-    && adduser -S -G vumi vumi
+    && adduser --system --ingroup vumi vumi
 
 WORKDIR /app
 
