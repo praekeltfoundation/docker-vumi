@@ -22,6 +22,12 @@ SET_OPTS=$(env \
   | sed -e 's/^VUMI_OPT_//' -e 's/=/ /' \
   | awk '{printf("%s=%s:%s ", "--set-option", tolower($1), $2);}')
 
+# Generate Twisted's plugin cache just before running -- all plugins should be
+# installed at this point. Twisted is installed site-wide, so the root user is
+# needed to perform this operation. See:
+# http://twistedmatrix.com/documents/current/core/howto/plugin.html#plugin-caching
+python -c 'from twisted.plugin import IPlugin, getPlugins; list(getPlugins(IPlugin))'
+
 exec su-exec vumi \
   twistd --nodaemon --pidfile="" \
     $TWISTD_COMMAND \
