@@ -3,9 +3,13 @@ services:
   - docker
 language: bash
 env:
-  - BASE_OS=alpine VARIETY=
-  - BASE_OS=debian VARIETY=
-  - BASE_OS=debian VARIETY=pypy
+  global:
+    - REGISTRY_USER=praekeltorgdeploy
+    - secure: "I3t1OHRkMqYALcImjqlfldP9348bMgRAaD/sNy6aZ+4PPGVPurlGHU3jMEQWJJ9ojOcAAoN1qC+8kVsM1Fj5r9jmLUm1ixFE83gCbesD0EzZ5nPR4DMi8YR6Fde2nJcPgUoOOiNtE6/ZXHtJT3F4R8xbandsCGjae9jcHHGwSkIBoS8A6iUnOX5SE6sLrSydAvVAPzrfxaogKDrWdrWyBLLd3Un/nSK+v2ATg3b01W4cU/Wbz591Q2M4Bi2Y2cdETHzs/higertEFFKEHOIr2PvD9AfJWcJp+JjHxpu17pkgPxwLmmf/ORfo56udV+wxkDFWA1HjOYWSvUpHpkOBVY6hWmZ1AiB6nqA0iqTix/dpC9ppFLxRaNNv9xZMbbUiNqjk/P5BVmwc41RGM1Ye43uD2+yMah600Z44bSipQvhBUiv0Nr1igzYeb7kUWZq572SN7V0BSSO+JL0wneHcRFjvAVYRWYkoIdoIvW9CPt2pRQ56mvmHsqiMQE+2r3x0IEzGO44fEFL7AH4y82TrGdyYbLc8VL90QQiligovwpL89SndCbdrm3ThhKv+9coay+WVtfyk5SQ1kK+9kQU23hkI5dMM5dwNrOLxxhllyXcaE8ii79/gvotY2AKt3rFvWJWfk+DGm87unSq73dn5eQqW5Mhoezg+PvlSxrHMxx4="
+  matrix:
+    - BASE_OS=alpine VARIETY=     TAG_DEFAULT=
+    - BASE_OS=debian VARIETY=     TAG_DEFAULT=1
+    - BASE_OS=debian VARIETY=pypy TAG_DEFAULT=
 
 # Update Docker Engine
 before_install:
@@ -22,3 +26,11 @@ script:
 
 after_script:
   - docker images
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+deploy:
+  provider: script
+  script: ./deploy.sh "$IMAGE_TAG" ${TAG_DEFAULT:+--default}
+  on:
+    branch: develop
