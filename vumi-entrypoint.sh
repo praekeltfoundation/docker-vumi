@@ -23,7 +23,7 @@ SET_OPTS=$(env \
   | awk '{printf("%s=%s:%s ", "--set-option", tolower($1), $2);}')
 
 exec su-exec vumi \
-  twistd --nodaemon \
+  twistd --nodaemon --pidfile="" \
     $TWISTD_COMMAND \
     $WORKER_CLASS_OPT \
     $CONFIG_OPT \
