@@ -23,9 +23,26 @@ docker run -d --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010 \
   "$IMAGE_TAG"
 sleep 5
 
+function try_a_few_times {
+  # Stolen from http://unix.stackexchange.com/a/137639 with a few adjustments
+  local n=1 max=5 delay=1
+  while true; do
+    "$@" && break || {
+      if [[ "$n" < "$max" ]]; then
+        ((n++))
+        echo "Command failed. Attempt $n/$max"
+        sleep $delay
+      else
+        fail "The command has failed after $n attempts."
+      fi
+    }
+  done
+}
+
 echo "Checking container logs to see if it started correctly..."
-docker logs vumi-telnet \
-  | fgrep "Starting a TelnetServerTransport worker with config: {'telnet_port': '9010', 'transport_name': 'telnet'}"
+try_a_few_times \
+  docker logs vumi-telnet \
+    | fgrep "Starting a TelnetServerTransport worker with config: {'telnet_port': '9010', 'transport_name': 'telnet'}"
 
 echo "Launching Vumi echo worker container..."
 docker run -d --name vumi-echo --link vumi-rabbitmq:rabbitmq \
@@ -37,9 +54,10 @@ sleep 5
 
 # Wait for the session to start, send our message, wait for reply
 echo "Checking if the echo server works over the telnet interface..."
-{ sleep 1; echo 'hallo world'; sleep 1; } \
-  | telnet localhost 9010 \
-  | fgrep 'hallo world'
+try_a_few_times \
+  bash -c "sleep 1; echo 'hallo world'; sleep 1" \
+    | telnet localhost 9010 \
+    | fgrep 'hallo world'
 
 echo "Checking container logs to see if message was logged..."
 docker logs vumi-echo | fgrep 'User message: hallo world'
