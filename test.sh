@@ -12,17 +12,35 @@ fi
 
 IMAGE_TAG="$1"; shift
 
+CONTAINERS=()
+function docker_run {
+  # Run a detached container temporarily for tests. Removes the container when
+  # the script exits and sleeps a bit to wait for it to start.
+  local container
+  container="$(docker run -d "$@")"
+  echo "$container"
+  CONTAINERS+=("$container")
+  sleep 5
+}
+
+function remove_containers {
+  echo "Stopping and removing containers..."
+  for container in "${CONTAINERS[@]}"; do
+    docker stop "$container"
+    docker rm "$container"
+  done
+}
+trap remove_containers EXIT
+
 echo "Launching RabbitMQ container..."
-docker run -d --name vumi-rabbitmq rabbitmq
-sleep 5
+docker_run --name vumi-rabbitmq rabbitmq
 
 echo "Launching Vumi telnet transport container..."
-docker run -d --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010 \
+docker_run --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010 \
   -e AMQP_HOST=rabbitmq \
   -e WORKER_CLASS=vumi.transports.telnet.TelnetServerTransport \
   -e VUMI_OPT_TRANSPORT_NAME=telnet -e VUMI_OPT_TELNET_PORT=9010 \
   "$IMAGE_TAG"
-sleep 5
 
 function try_a_few_times {
   # Stolen from http://unix.stackexchange.com/a/137639 with a few adjustments
@@ -46,12 +64,11 @@ function check_transport_logs {
 try_a_few_times check_transport_logs
 
 echo "Launching Vumi echo worker container..."
-docker run -d --name vumi-echo --link vumi-rabbitmq:rabbitmq \
+docker_run --name vumi-echo --link vumi-rabbitmq:rabbitmq \
   -e AMQP_HOST=rabbitmq \
   -e WORKER_CLASS=vumi.demos.words.EchoWorker \
   -e VUMI_OPT_TRANSPORT_NAME=telnet \
   "$IMAGE_TAG"
-sleep 5
 
 function check_telnet_echo {
   echo "Checking if the echo server works over the telnet interface..."
@@ -64,10 +81,6 @@ try_a_few_times check_telnet_echo
 
 echo "Checking container logs to see if message was logged..."
 docker logs vumi-echo | fgrep 'User message: hallo world'
-
-echo "Stopping and removing all containers..."
-docker stop vumi-telnet vumi-echo vumi-rabbitmq
-docker rm vumi-telnet vumi-echo vumi-rabbitmq
 
 echo
 echo "Done"
