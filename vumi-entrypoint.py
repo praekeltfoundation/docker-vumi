@@ -75,10 +75,12 @@ if __name__ == '__main__':
     runner.add_env_opt('--config', 'CONFIG_FILE')
 
     # AMQP
-    runner.add_env_opt('--hostname', 'AMQP_HOST')
-    runner.add_env_opt('--port', 'AMQP_PORT')
-    runner.add_env_opt('--username', 'AMQP_USERNAME')
-    runner.add_env_opt('--password', 'AMQP_PASSWORD')
+    if 'AMQP_HOST' in os.environ:
+        runner.add_env_opt('--hostname', 'AMQP_HOST')
+        runner.add_env_opt('--port', 'AMQP_PORT', default='5672')
+        runner.add_env_opt('--vhost', 'AMQP_VHOST', default='/')
+        runner.add_env_opt('--username', 'AMQP_USERNAME', default='guest')
+        runner.add_env_opt('--password', 'AMQP_PASSWORD', default='guest')
 
     # Sentry
     runner.add_env_opt('--sentry', 'SENTRY_DSN')
