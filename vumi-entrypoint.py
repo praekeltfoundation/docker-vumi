@@ -66,7 +66,8 @@ if __name__ == '__main__':
     from twisted.plugin import IPlugin, getPlugins
     list(getPlugins(IPlugin))
 
-    runner = ProcessRunner('twist')
+    runner = ProcessRunner('twistd')
+    runner.add_args(['--nodaemon', '--pidfile', ''])
 
     # Basics
     runner.add_env_arg('TWISTD_COMMAND', default='vumi_worker')
