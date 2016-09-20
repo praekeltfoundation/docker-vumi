@@ -58,8 +58,10 @@ function try_a_few_times {
 
 function check_transport_logs {
   echo "Checking container logs to see if it started correctly..."
-  docker logs vumi-telnet \
-    | fgrep "Starting a TelnetServerTransport worker with config: {'telnet_port': '9010', 'transport_name': 'telnet'}"
+  local logs="$(docker logs vumi-telnet)"
+  echo "$logs" | fgrep 'Starting a TelnetServerTransport worker'
+  echo "$logs" | fgrep "'transport_name': 'telnet'"
+  echo "$logs" | fgrep "'telnet_port': '9010'"
 }
 try_a_few_times check_transport_logs
 
