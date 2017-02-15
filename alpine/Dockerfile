@@ -9,5 +9,5 @@ RUN addgroup vumi \
 
 WORKDIR /app
 
-COPY ./vumi-entrypoint.sh /scripts/
-CMD ["vumi-entrypoint.sh"]
+COPY ./vumi-entrypoint.py /scripts/
+CMD ["vumi-entrypoint.py"]
