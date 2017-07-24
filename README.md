@@ -1,7 +1,7 @@
 # docker-vumi
 
 [![Build Status](https://travis-ci.org/praekeltfoundation/docker-vumi.svg?branch=develop)](https://travis-ci.org/praekeltfoundation/docker-vumi)
-[![Requirements Status](https://requires.io/github/praekeltfoundation/docker-vumi/requirements.svg?branch=develop)](https://requires.io/github/praekeltfoundation/docker-vumi/requirements/?branch=develop)
+[![Requirements Status](https://pyup.io/repos/github/praekeltfoundation/docker-vumi/shield.svg)](https://pyup.io/repos/github/praekeltfoundation/docker-vumi/)
 
 Docker images for the Vumi messaging engine (http://vumi.readthedocs.io)
 
