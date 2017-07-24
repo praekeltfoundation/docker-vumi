@@ -9,4 +9,4 @@ RUN pip install -r /requirements.txt
 WORKDIR /app
 
 COPY vumi-entrypoint.sh /scripts/
-CMD ["vumi-entrypoint.sh"]
+ENTRYPOINT ["tini", "--", "vumi-entrypoint.sh"]
