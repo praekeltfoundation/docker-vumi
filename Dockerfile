@@ -1,5 +1,4 @@
 FROM praekeltfoundation/python-base:2
-MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
 COPY ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
