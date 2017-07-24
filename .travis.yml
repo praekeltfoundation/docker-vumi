@@ -19,9 +19,10 @@ before_script:
   - dockerfile="${VARIANT:+$VARIANT/}Dockerfile"
   - version="$(sed -nE 's/^vumi==([[0-9]\.]+)/\1/p' requirements.txt)"
   - echo "Building image '$image_tag' from Dockerfile '$dockerfile' for Vumi version '$version'..."
+  - docker pull "$image_tag" || true
 
 script:
-  - docker build --tag "$image_tag" --file "$DOCKERFILE" .
+  - docker build --pull --cache-from "$image_tag" --tag "$image_tag" --file "$DOCKERFILE" .
   - ./test.sh "$image_tag"
 
 after_script:
