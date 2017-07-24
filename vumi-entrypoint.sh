@@ -1,15 +1,18 @@
 #!/usr/bin/env sh
 set -e
 
+# If `python` isn't available, we should use `pypy`
+python=$(command -v python > /dev/null && echo python || echo pypy)
+
 # Generate Twisted's plugin cache just before running -- all plugins should be
 # installed at this point. Twisted is installed site-wide, so the root user is
 # needed to perform this operation. See:
 # http://twistedmatrix.com/documents/current/core/howto/plugin.html#plugin-caching
-python -c 'from twisted.plugin import IPlugin, getPlugins; list(getPlugins(IPlugin))'
+"$python" -c 'from twisted.plugin import IPlugin, getPlugins; list(getPlugins(IPlugin))'
 
 is_twistd_command() {
 	local cmd="$1"; shift
-	python - <<EOF
+	"$python" - <<EOF
 import sys
 from twisted.plugin import getPlugins
 from twisted.application.service import IServiceMaker
