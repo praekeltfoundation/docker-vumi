@@ -17,7 +17,7 @@ install: [] # Don't do a pip install (default for Travis Python environment)
 before_script:
   - image_tag="$IMAGE_NAME${VARIANT:+:$VARIANT}"
   - dockerfile="${VARIANT:+$VARIANT/}Dockerfile"
-  - version="$(sed -nE 's/^vumi==([[0-9]\.]+)/\1/p' requirements.txt)"
+  - version="$(sed -nE 's/^vumi==([0-9\.]+)/\1/p' requirements.txt)"
   - echo "Building image '$image_tag' from Dockerfile '$dockerfile' for Vumi version '$version'..."
   - docker pull "$image_tag" || true
 
