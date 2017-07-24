@@ -22,7 +22,7 @@ before_script:
 
 script:
   - docker build --tag "$image_tag" --file "$DOCKERFILE" .
-  - ./test.sh "$IMAGE_TAG"
+  - ./test.sh "$image_tag"
 
 after_script:
   - docker images
