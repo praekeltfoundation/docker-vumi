@@ -30,7 +30,7 @@ function remove_containers {
     docker rm "$container"
   done
 }
-# trap remove_containers EXIT
+trap remove_containers EXIT
 
 echo "Launching RabbitMQ container..."
 docker_run --name vumi-rabbitmq rabbitmq:alpine
