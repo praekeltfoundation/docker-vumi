@@ -1,4 +1,4 @@
-FROM praekeltfoundation/python-base:alpine
+FROM praekeltfoundation/python-base:2-alpine
 MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
 COPY ./requirements.txt /requirements.txt

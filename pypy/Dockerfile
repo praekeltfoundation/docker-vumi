@@ -1,4 +1,4 @@
-FROM praekeltfoundation/python-base:debian
+FROM praekeltfoundation/pypy-base:2
 MAINTAINER Praekelt Foundation <dev@praekeltfoundation.org>
 
 COPY ./requirements.txt /requirements.txt
