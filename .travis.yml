@@ -22,7 +22,7 @@ before_script:
   - docker pull "$image_tag" || true
 
 script:
-  - docker build --pull --cache-from "$image_tag" --tag "$image_tag" --file "$DOCKERFILE" .
+  - docker build --pull --cache-from "$image_tag" --tag "$image_tag" --file "$dockerfile" .
   - ./test.sh "$image_tag"
 
 after_script:
