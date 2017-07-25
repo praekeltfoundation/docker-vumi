@@ -33,7 +33,7 @@ function remove_containers {
 trap remove_containers EXIT
 
 echo "Launching RabbitMQ container..."
-docker_run --name vumi-rabbitmq rabbitmq
+docker_run --name vumi-rabbitmq rabbitmq:alpine
 
 echo "Launching Vumi telnet transport container..."
 docker_run --name vumi-telnet --link vumi-rabbitmq:rabbitmq -p 9010:9010 \

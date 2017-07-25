@@ -1,7 +1,7 @@
-FROM praekeltfoundation/python-base:2-alpine
+FROM praekeltfoundation/python-base:2
 
 RUN addgroup vumi \
-    && adduser -S -G vumi vumi
+    && adduser --system --ingroup vumi vumi
 
 COPY requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
