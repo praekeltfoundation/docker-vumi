@@ -1,4 +1,5 @@
-FROM praekeltfoundation/python-base:2-alpine
+ARG VARIANT=alpine
+FROM praekeltfoundation/python-base:2.7-$VARIANT
 
 RUN addgroup vumi \
     && adduser -S -G vumi vumi
