@@ -35,6 +35,6 @@ before_deploy:
   - echo "$REGISTRY_PASS" | docker login -u "$REGISTRY_USER" --password-stdin
 deploy:
   provider: script
-  script: dcd --tag "$VARIANT" ${DEFAULT_TAG:+''} --version "$version" --version-latest "$image_tag"
+  script: dcd --tag "$VARIANT" ${TAG_DEFAULT:+''} --version "$version" --version-latest "$image_tag"
   on:
     branch: master
