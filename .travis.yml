@@ -12,7 +12,6 @@ env:
     - VARIANT=jessie  TAG_DEFAULT=1
     - VARIANT=stretch TAG_DEFAULT=
     - VARIANT=alpine  TAG_DEFAULT=  DOCKERFILE=alpine/Dockerfile
-    - VARIANT=pypy    TAG_DEFAULT=
 
 install: [] # Don't do a pip install (default for Travis Python environment)
 
