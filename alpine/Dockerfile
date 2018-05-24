@@ -1,6 +1,7 @@
-FROM praekeltfoundation/python-base:2-alpine
+ARG VARIANT=alpine
+FROM praekeltfoundation/python-base:2.7-$VARIANT
 
-RUN addgroup vumi \
+RUN addgroup -S vumi \
     && adduser -S -G vumi vumi
 
 # The Python 2 base image doesn't have this installed by default anymore

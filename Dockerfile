@@ -1,6 +1,7 @@
-FROM praekeltfoundation/python-base:2
+ARG VARIANT=jessie
+FROM praekeltfoundation/python-base:2.7-$VARIANT
 
-RUN addgroup vumi \
+RUN addgroup --system vumi \
     && adduser --system --ingroup vumi vumi
 
 COPY requirements.txt /requirements.txt
