@@ -7,6 +7,9 @@ env:
     - IMAGE_NAME=praekeltfoundation/vumi
     - REGISTRY_USER=praekeltorgdeploy
     - secure: "I3t1OHRkMqYALcImjqlfldP9348bMgRAaD/sNy6aZ+4PPGVPurlGHU3jMEQWJJ9ojOcAAoN1qC+8kVsM1Fj5r9jmLUm1ixFE83gCbesD0EzZ5nPR4DMi8YR6Fde2nJcPgUoOOiNtE6/ZXHtJT3F4R8xbandsCGjae9jcHHGwSkIBoS8A6iUnOX5SE6sLrSydAvVAPzrfxaogKDrWdrWyBLLd3Un/nSK+v2ATg3b01W4cU/Wbz591Q2M4Bi2Y2cdETHzs/higertEFFKEHOIr2PvD9AfJWcJp+JjHxpu17pkgPxwLmmf/ORfo56udV+wxkDFWA1HjOYWSvUpHpkOBVY6hWmZ1AiB6nqA0iqTix/dpC9ppFLxRaNNv9xZMbbUiNqjk/P5BVmwc41RGM1Ye43uD2+yMah600Z44bSipQvhBUiv0Nr1igzYeb7kUWZq572SN7V0BSSO+JL0wneHcRFjvAVYRWYkoIdoIvW9CPt2pRQ56mvmHsqiMQE+2r3x0IEzGO44fEFL7AH4y82TrGdyYbLc8VL90QQiligovwpL89SndCbdrm3ThhKv+9coay+WVtfyk5SQ1kK+9kQU23hkI5dMM5dwNrOLxxhllyXcaE8ii79/gvotY2AKt3rFvWJWfk+DGm87unSq73dn5eQqW5Mhoezg+PvlSxrHMxx4="
+  matrix:
+    - VARIANT=python-base:2.7
+    - VARIANT=pypy-base:2.7
 
 install: [] # Don't do a pip install (default for Travis Python environment)
 
@@ -16,7 +19,7 @@ before_script:
   - docker pull "$IMAGE_NAME" || true
 
 script:
-  - docker build --pull --cache-from "$IMAGE_NAME" -t "$IMAGE_NAME" .
+  - docker build --pull --cache-from "$IMAGE_NAME" -t "$IMAGE_NAME" --build-arg VARIANT="$VARIANT" .
   - ./test.sh "$IMAGE_NAME"
 
 after_script:

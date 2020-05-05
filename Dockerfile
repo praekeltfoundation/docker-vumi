@@ -1,5 +1,5 @@
-ARG VARIANT
-FROM praekeltfoundation/python-base:2.7${VARIANT:+-$VARIANT}
+ARG VARIANT=python-base:2.7
+FROM praekeltfoundation/${VARIANT:+$VARIANT}
 
 RUN addgroup --system vumi \
     && adduser --system --ingroup vumi vumi
