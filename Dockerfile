@@ -1,5 +1,4 @@
-ARG VARIANT=python
-FROM praekeltfoundation/${VARIANT}-base:2.7
+FROM ghcr.io/praekeltfoundation/pypy-base-nw:2-buster
 
 RUN addgroup --system vumi \
     && adduser --system --ingroup vumi vumi
