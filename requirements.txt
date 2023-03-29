@@ -1,2 +1,4 @@
+# Twisted dep, newer versions don't work with ancient Python.
+automat<22.10.0
 vumi==0.6.19
 raven==3.5.2
